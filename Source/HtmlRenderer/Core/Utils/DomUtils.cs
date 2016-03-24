@@ -914,6 +914,25 @@ namespace TheArtOfDev.HtmlRenderer.Core.Utils
             }
         }
 
+        /// <summary>
+        /// Lists all words within the <paramref name="box"/> DOM hierarchy.
+        /// </summary>
+        /// <param name="box">the box to start the search.</param>
+        /// <returns>List of all words</returns>
+        public static System.Collections.Generic.IEnumerable<CssRect> GetWords(CssBox box)
+        {
+            foreach (var word in box.Words)
+            {
+                yield return word;
+            }
+
+            foreach (var childBox in box.Boxes)
+            {
+                foreach (var word in GetWords(childBox))
+                    yield return word;
+            }
+        }
+
         #endregion
     }
 }

@@ -340,6 +340,22 @@ namespace TheArtOfDev.HtmlRenderer.Core.Handlers
         }
 
         /// <summary>
+        /// Selects the word found by <paramref name="wordText"/> at the <paramref name="index"/> occurence.
+        /// </summary>
+        /// <param name="wordText">The word to select.</param>
+        /// <param name="index">The nth occurence to select.</param>
+        /// <param name="comparison">Specify the StringComparison.</param>
+        public void Select(RControl control, string wordText, int index, StringComparison comparison)
+        {
+            if (_root.HtmlContainer.IsSelectionEnabled)
+            {
+                ClearSelection();
+                SelectMatchingWord(_root, wordText, index, comparison);
+                control.Invalidate();
+            }
+        }
+
+        /// <summary>
         /// The selection end index if the last selected word is partially selected (-1 if not selected or fully selected)<br/>
         /// if the given word is not starting or ending selection word -1 is returned as full word selection is in place.
         /// </summary>
@@ -529,6 +545,30 @@ namespace TheArtOfDev.HtmlRenderer.Core.Handlers
             }
         }
 
+        /// <summary>
+        /// Selects the word found by <paramref name="wordText"/> at the <paramref name="index"/> occurence.
+        /// </summary>
+        /// <param name="wordText">The word to select.</param>
+        /// <param name="index">The nth occurence to select.</param>
+        /// <param name="comparison">Specify the StringComparison.</param>
+        public void SelectMatchingWord(CssBox box, string wordText, int index, StringComparison comparison)
+        {
+            int n = 0;
+            foreach(var word in DomUtils.GetWords(box))
+            {
+                if (word.Text != null && word.Text.IndexOf(wordText, comparison) != -1)
+                {
+                    if (n == index)
+                    {
+                        word.Selection = this;
+                        return;
+                    }
+                    n++;
+                }
+            }
+        }
+
+     
         /// <summary>
         /// Check if the current selection is non empty, has some selection data.
         /// </summary>

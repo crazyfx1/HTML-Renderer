@@ -321,6 +321,28 @@ namespace TheArtOfDev.HtmlRenderer.WPF
         }
 
         /// <summary>
+        /// Selects the word found by <paramref name="wordText"/> at the <paramref name="index"/> occurence.
+        /// </summary>
+        /// <param name="wordText">The word to select.</param>
+        /// <param name="index">The nth occurence to select.</param>
+        /// <param name="comparison">Specify the StringComparison.</param>
+        public void Select(Control parent, string wordText, int index, StringComparison comparison)
+        {
+            _htmlContainerInt.Select(new ControlAdapter(parent), wordText, index, comparison);
+        }
+
+        /// <summary>
+        /// Counts all the requested words in this html document.
+        /// </summary>
+        /// <param name="word">Word to find.</param>
+        /// <param name="comparison">StringComparison parameter.</param>
+        /// <returns>Number of occurences.</returns>
+        public int CountWords(string wordText, StringComparison comparison)
+        {
+            return _htmlContainerInt.CountWords(wordText, comparison);
+        }
+
+        /// <summary>
         /// Get css link href at the given x,y location.
         /// </summary>
         /// <param name="location">the location to find the link at</param>

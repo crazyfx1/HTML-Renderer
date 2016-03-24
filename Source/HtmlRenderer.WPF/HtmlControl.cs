@@ -271,6 +271,30 @@ namespace TheArtOfDev.HtmlRenderer.WPF
                 _htmlContainer.ClearSelection();
         }
 
+        /// <summary>
+        /// Selects the word found by <paramref name="wordText"/> at the <paramref name="index"/> occurence.
+        /// </summary>
+        /// <param name="wordText">The word to select.</param>
+        /// <param name="index">The nth occurence to select.</param>
+        /// <param name="comparison">Specify the StringComparison.</param>
+        public void Select(string wordText, int index, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+        {
+            if (_htmlContainer != null)
+                _htmlContainer.Select(this, wordText, index, comparison);
+        }
+
+        /// <summary>
+        /// Counts all the requested words in this html document.
+        /// </summary>
+        /// <param name="word">Word to find.</param>
+        /// <param name="comparison">StringComparison parameter.</param>
+        /// <returns>Number of occurences.</returns>
+        public int CountWords(string word, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+        {
+            if (_htmlContainer != null)
+                return _htmlContainer.CountWords(word, comparison);
+            return 0;
+        }
 
         #region Private methods
 

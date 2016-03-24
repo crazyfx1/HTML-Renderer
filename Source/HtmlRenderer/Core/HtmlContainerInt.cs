@@ -188,7 +188,6 @@ namespace TheArtOfDev.HtmlRenderer.Core
         public HtmlContainerInt(RAdapter adapter)
         {
             ArgChecker.AssertArgNotNull(adapter, "global");
-
             _adapter = adapter;
             _cssParser = new CssParser(adapter);
         }
@@ -318,7 +317,7 @@ namespace TheArtOfDev.HtmlRenderer.Core
             set { _isSelectionEnabled = value; }
         }
 
-        /// <summary>
+         /// <summary>
         /// Is the build-in context menu enabled and will be shown on mouse right click (default - true)
         /// </summary>
         public bool IsContextMenuEnabled
@@ -473,6 +472,17 @@ namespace TheArtOfDev.HtmlRenderer.Core
         }
 
         /// <summary>
+        /// Selects the word found by <paramref name="wordText"/> at the <paramref name="index"/> occurence.
+        /// </summary>
+        /// <param name="wordText">The word to select.</param>
+        /// <param name="index">The nth occurence to select.</param>
+        /// <param name="comparison">Specify the StringComparison.</param>
+        public void Select(RControl control, string wordText, int index, StringComparison comparison)
+        {
+            _selectionHandler.Select(control, wordText, index, comparison);
+        }
+
+        /// <summary>
         /// Get html from the current DOM tree with style if requested.
         /// </summary>
         /// <param name="styleGen">Optional: controls the way styles are generated when html is generated (default: <see cref="HtmlGenerationStyle.Inline"/>)</param>
@@ -512,6 +522,23 @@ namespace TheArtOfDev.HtmlRenderer.Core
                 linkElements.Add(new LinkElementData<RRect>(box.GetAttribute("id"), box.GetAttribute("href"), CommonUtils.GetFirstValueOrDefault(box.Rectangles, box.Bounds)));
             }
             return linkElements;
+        }
+
+        /// <summary>
+        /// Counts all the requested words in this html document.
+        /// </summary>
+        /// <param name="word">Word to find.</param>
+        /// <param name="comparison">StringComparison parameter.</param>
+        /// <returns>Number of occurences.</returns>
+        public int CountWords(string word, StringComparison comparison)
+        {
+            int n = 0;
+            foreach(var w in DomUtils.GetWords(_root))
+            {
+                if (w.Text.IndexOf(word, comparison) > -1)
+                    n++;
+            }
+            return n;
         }
 
         /// <summary>
